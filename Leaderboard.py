@@ -7,7 +7,6 @@ from Person  import User
 from Person import Position
 from Person import Bet
 from collections import defaultdict
-import BinanceHelper
 try:
     LeaderboardURL = "https://www.binance.com/bapi/futures/v2/public/future/leaderboard/getOtherLeaderboardBaseInfo"
     PositionsURL = "https://www.binance.com/bapi/futures/v1/public/future/leaderboard/getOtherPosition"
@@ -108,10 +107,6 @@ try:
                 for b in Bets:
                     if position.symbol == b.symbol:
                         print('Close Bet ' + position.symbol)
-                        try:
-                            BinanceHelper.CloseOrder(position.symbol, not b.side)
-                        except Exception as e:
-                            TgBot.SendError("Failed : {0}\n".format(str(e)))
                         TgBot.SendAllUsers1(usr, position)
                         Bets.remove(b)
                         break
@@ -149,11 +144,6 @@ try:
                         flag = False
                     b = Bet(positionToIns.symbol,flag)
                     if  b not in Bets:
-                        print('Send bet' + positionToIns.symbol)
-                        try:
-                            BinanceHelper.CreateOrder(positionToIns ,flag)
-                        except Exception as e:
-                            TgBot.SendError("Failed : {0}\n".format(str(e)))
                         Bets.append(b)
                         TgBot.SendAllUsers(tmpUser,positionToIns)
                     print('NEW '+tmpUser.name +' ' + positionToIns.symbol +' ' + positionToIns.term)
@@ -165,18 +155,10 @@ try:
                             position.pnl = float("{:.2f}".format(data["pnl"]))
                             position.roe = float("{:.4f}".format(data["roe"]))*100
                             if(position.amount != data["amount"]):
-                                try:
-                                    BinanceHelper.UpdateOrder(position ,flag,data["amount"] - position.amount)
-                                except Exception as e:
-                                    TgBot.SendError("Failed : {0}\n".format(str(e)))
                                 position.amount = data["amount"]
                                 TgBot.SendAllUsersChange(tmpUser,position,"Amount")
                             if(position.leverage != data["leverage"]):
                                 position.leverage = data["leverage"]
-                                try:
-                                    BinanceHelper.ChangeLeverage(position)
-                                except Exception as e:
-                                    TgBot.SendError("Failed : {0}\n".format(str(e)))
                                 TgBot.SendAllUsersChange(tmpUser,position,"Leverage")
                             break
 
@@ -186,4 +168,3 @@ except Exception as e:
     logf = open("logger.log", "w")
     logf.write("Failed : {0}\n".format(str(e)))
     # TgBot.SendError("Failed : {0}\n".format(str(e)))
-    BinanceHelper.CloseAllOrders()
