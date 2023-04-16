@@ -23,7 +23,7 @@ try:
                 responseJson = req.json()
                 return responseJson
             except requests.exceptions.RequestException as e:
-                time.sleep(10)
+                time.sleep(5)
             
 
     def GetPositionsData(encryptedId):
@@ -35,7 +35,7 @@ try:
                 responseJson = req.json()
                 return responseJson
             except Exception as e:
-                time.sleep(10)
+                time.sleep(5)
         
 
     FirstTime = True
@@ -156,13 +156,13 @@ try:
                             position.markPrice = data["markPrice"]
                             position.pnl = float("{:.2f}".format(data["pnl"]))
                             position.roe = float("{:.4f}".format(data["roe"]))*100
-                            if(position.amount != data["amount"]):
-                                position.amount = data["amount"]
-                                TgBot.SendAllUsersChange(tmpUser,position,"Amount")
-                            if(position.leverage != data["leverage"]):
-                                position.leverage = data["leverage"]
-                                TgBot.SendAllUsersChange(tmpUser,position,"Leverage")
-                            break
+                            # if(position.amount != data["amount"]):
+                            #     position.amount = data["amount"]
+                            #     TgBot.SendAllUsersChange(tmpUser,position,"Amount")
+                            # if(position.leverage != data["leverage"]):
+                            #     position.leverage = data["leverage"]
+                            #     TgBot.SendAllUsersChange(tmpUser,position,"Leverage")
+                            # break
 
             CheckIfClosed(tmpUser,userData["data"]["otherPositionRetList"])
 

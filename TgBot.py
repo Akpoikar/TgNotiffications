@@ -59,7 +59,7 @@ def SendAllUsers(tmpUser, positionToIns):
                 epoch = datetime.datetime.fromtimestamp(positionToIns.time/1000.0)           
                 date = str(epoch.strftime('%Y-%m-%d %H:%M:%S.%f')[:-3])
 
-                msgId = bot.send_message( chat_id,"🚨Open : " + tmpUser.name +'\nTime: ' + date + '\n\n' +"Symbol: " + positionToIns.symbol + '\n' + '\nAmount:' + str(positionToIns.amount) + '\n' + 'Type: ' + positionToIns.term + '\n' + 'Market price: ' + str(positionToIns.entryPrice) + '\nLeverage : ' + str(positionToIns.leverage))
+                msgId = bot.send_message( chat_id,"Open:\n🚨"+ tmpUser.name + " OPENED position\n🏦 " + positionToIns.symbol + ' - '+ positionToIns.term +'\n🔗 Entry: '+ str(positionToIns.entryPrice) + '\n⚡️ Size: ' + str(positionToIns.amount) + ' ' + str(positionToIns.leverage) + 'x')
                 pos = BettingPosition(tmpUser.id,positionToIns.symbol,msgId)
                 BettingPositions.append(pos)
     except Exception as e:
@@ -81,7 +81,7 @@ def SendAllUsers1(tmpUser, positionToIns):
                 roe = str("{:.2f}".format(positionToIns.roe)) + '% ❌'
             for bet in BettingPositions:
                 if(bet.userId == tmpUser.id and positionToIns.symbol == bet.symbol):
-                    bot.reply_to( bet.msgid,"🔒Close: " + tmpUser.name +'\nTime: ' + date + '\n\n' +"Symbol : " + positionToIns.symbol + '\n' +"Amount : " + str(positionToIns.amount) + '\n' + 'Type: ' + positionToIns.term + '\n' + 'Open price: ' + str(positionToIns.entryPrice) + '\nClosing price: ' + str(positionToIns.markPrice) + '\nPnL: ' + pnl + '\nRoe: ' + roe+ '\nLeverage : ' + str(positionToIns.leverage))
+                    bot.reply_to( bet.msgid,"Closed :\n✅ " + tmpUser.name +' CLOSED position\n🏦 ' + positionToIns.symbol + ' - ' + positionToIns.term  +'\n💰 '+ roe + ' / $ ' + pnl)
                     BettingPositions.remove(bet)
                     break
     except Exception as e:
