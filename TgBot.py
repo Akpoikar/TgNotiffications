@@ -28,6 +28,7 @@ def Follow(msg):
 
 @bot.message_handler(commands=['showall'])
 def Greetings(msg):
+    chat_id = msg.chat.id 
     try:
         for item in UsersToFollow:
             bot.send_message( chat_id,item )
