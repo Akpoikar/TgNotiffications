@@ -60,7 +60,7 @@ def SendAllUsers(tmpUser, positionToIns):
                 epoch = datetime.datetime.fromtimestamp(positionToIns.time/1000.0)           
                 date = str(epoch.strftime('%Y-%m-%d %H:%M:%S.%f')[:-3])
 
-                msgId = bot.send_message( chat_id," 🚨"+ tmpUser.name + " OPENED position\n🪙 " + positionToIns.symbol + ' - '+ positionToIns.term +'\nTime: '+date+'🕒\n🔗 Entry: '+ str(positionToIns.entryPrice) + '\n⚡️ Size: ' + str(positionToIns.amount) + ' ' + str(positionToIns.leverage) + 'x')
+                msgId = bot.send_message( chat_id," 🚨"+ tmpUser.name + " OPENED position\n🪙 " + positionToIns.symbol + ' - '+ positionToIns.term +'\n🕒 Time: '+date+'\n\n🔗 Entry: '+ str(positionToIns.entryPrice) + '\n⚡️ Size: ' + str(positionToIns.amount) + ' ' + str(positionToIns.leverage) + 'x')
                 pos = BettingPosition(tmpUser.id,positionToIns.symbol,msgId)
                 BettingPositions.append(pos)
     except Exception as e:
